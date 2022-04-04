@@ -22,3 +22,10 @@ Route::get('homepage',"NehodaController@main");
 Route::get('map',"NehodaController@map");
 
 Route::get('speedmeter',"NehodaController@spedmeter");
+
+Route::get('getid',"NehodaController@getid");
+
+//Route::put('edit/{id}',"NehodaController@edit");
+
+Route::put('edit',"NehodaController@edit");
+
