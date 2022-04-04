@@ -43,5 +43,4 @@ class NehodaController extends Controller
         
         return ["Result"=>"Data has been saved"];
     }
-    
 }
