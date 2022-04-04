@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::get('homepage',"NehodaController@main");
 
 Route::get('map',"NehodaController@map");
+
+Route::get('speedmeter',"NehodaController@spedmeter");
