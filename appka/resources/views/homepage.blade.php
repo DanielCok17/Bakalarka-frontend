@@ -1,7 +1,5 @@
 <h1>Data list</h1>
 <ul>
-@foreach($data as $item)
-    <li><p>Mileage : {{$item['mileage']}} </p></li>
-    <li><p>Mileage : {{$item['mileage']}} </p></li>
-@endforeach
+<li><p>Latitude : {{$data['latitude']}} </p></li>
+<li><p>Longitude : {{$data['longitude']}} </p></li>
 </ul>

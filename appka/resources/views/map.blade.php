@@ -12,7 +12,7 @@
 </html>
 
 <script>
-    var center = SMap.Coords.fromWGS84(17.940884, 48.394480);
+    var center = SMap.Coords.fromWGS84({{$data['longitude']}} , {{$data['latitude']}});
     var m = new SMap(JAK.gel("m"), center, 13);
     m.addDefaultLayer(SMap.DEF_BASE).enable();
     m.addDefaultControls();
