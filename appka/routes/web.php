@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NehodaMail;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,6 @@ Route::get('/email', function(){
     return new NehodaMail();
 });
 
+Route::get('/nehody',"PdfController@getAllAccidents");
+
+Route::get('/downloadPDF', "PdfController@downloadPDF");
