@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NehodaMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,15 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('homepage',"NehodaController@main");
-
 Route::get('map',"NehodaController@map");
 
 Route::get('speedmeter',"NehodaController@spedmeter");
 
 Route::get('getid',"NehodaController@getid");
 
-//Route::put('edit/{id}',"NehodaController@edit");
-
 Route::put('edit',"NehodaController@edit");
+
+Route::get('/email', function(){
+    Mail::to('cokydano@gmail.com')->send(new NehodaMail());
+    return new NehodaMail();
+});
 
