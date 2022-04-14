@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NehodaMail;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\NehodaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,7 @@ use App\Http\Controllers\PdfController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('welcome',"NehodaController@main");
 
 Route::get('map',"NehodaController@map");
 
