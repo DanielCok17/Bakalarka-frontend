@@ -175,7 +175,8 @@ $.fn.speedometer = function (userPref) {
       }
     }
     this.creatHtmlsElecments();
-    $(this).bind(this.defaultProperty.eventListenerType,this.changePosition);
+    //$(this).bind(this.defaultProperty.eventListenerType,this.changePosition);
+    this.changePosition()
     return this;
   }
   

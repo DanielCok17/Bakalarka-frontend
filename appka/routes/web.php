@@ -17,7 +17,11 @@ use App\Http\Controllers\NehodaController;
 |
 */
 
-Route::get('welcome',"NehodaController@main");
+Route::get('homepage',"NehodaController@main");
+
+Route::get('welcome',"NehodaController@welcome");
+
+Route::get('record/{id}',"NehodaController@record");
 
 Route::get('map',"NehodaController@map");
 
