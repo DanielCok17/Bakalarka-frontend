@@ -29,10 +29,16 @@ class NehodaController extends Controller
     }
 
     function welcome(){
-        $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();
-        //dd($data);
-        //dd(count($data));
-        //dd($data[0]['vin']);
+        $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();      
+        $data2 = [];
+        $counter = 0;
+        for($i=0;$i <count($data);$i++){
+            if($data[$i]['status'] != 0){
+                $data2[$counter] = $data;
+                $counter++;
+            }
+        }
+        //dd($data2);
 
         return view('welcome',
         ['data'=> $data,
@@ -59,8 +65,8 @@ class NehodaController extends Controller
     }
 
     function edit($id){         
-        Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id, [
-            'status' => 99
+        Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id.'/edit', [
+            'status' => 0
         ]);
         
         return ["Result"=>"Data has been saved"];

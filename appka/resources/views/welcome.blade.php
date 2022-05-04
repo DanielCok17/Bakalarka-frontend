@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/app.css">    
+    <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+    <script type="text/javascript">Loader.load();</script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <title>WELCOME</title>
@@ -152,10 +154,64 @@ body{
     width: 300px;
 }
 
+.body {
+    min-height: 100vh;
+    max-width: 400px;
+    background-color: papayawhip; 
+    margin: 0 auto;
+}
+
+#rasto{
+  width:85%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
 </style>
 
 <body>
-    <h2>Záchranné stredisko</h2>
+<div id="rasto">  
+    <br>
+    <div class="topnav">
+      <a class="active" href="">Domov</a>
+      <a href="http://127.0.0.1:8000/nehody" target="_blank">Dataset nehôd</a>
+      <a href="#contact">Kontakt</a>
+    </div>
+
+    <!--<h2>Záchranné stredisko</h2>-->
+
+    <div style="margin-right: auto">
+    <h5>Nevyriešené autonehody</h5>
         <table class="table">
             <thead>
                 <tr>
@@ -164,9 +220,7 @@ body{
                 <th scope="col"></th>
                 </tr>
             </thead>
-            <p>{{$count}}</p>
             <tbody>
-
             @for($i = 0; $i < $count; $i++)
                 <tbody>
                     <th  scope="row">{{$i+1}}</th>
@@ -174,10 +228,42 @@ body{
                     <td><a href="http://127.0.0.1:8000/record/{{$data[$i]['_id']}}" target="_blank">Zobraziť</a></td>
                 </tbody>
             @endfor
-        </table>
+        </table>   
+    </div> 
 
-    
-    <p>Homepage</p>
+    <div style="margin-left: auto">
+    <h5>Dostupnosť záchranných zložiek</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">č.</th>
+                <th scope="col" style="text-align:center">Typ zložiek</th>
+                <th scope="col" style="text-align:center">Dostupnosť</th>
+                </tr>
+            </thead>
+            <tbody>
+              <th  scope="row">1</th>
+              <th style="text-align:center">Sanitka</th>
+              <th style="text-align:center">5/5</th>
+            </tbody>
+            <tbody>
+              <th  scope="row">2</th>
+              <th style="text-align:center">Polícia</th>
+              <th style="text-align:center">8/8</th>
+            </tbody>
+            <tbody>
+              <th  scope="row">4</th>
+              <th style="text-align:center">Hasič</th>
+              <th style="text-align:center">4/4</th>
+            </tbody>
+        </table>   
+    </div> 
+    <br>
+    <h4>Záchranné zložky v teréne</h4>
+      <div id="m" style="height:380px"></div>
+      <br>
+    </div> 
+    <br>
 </body>
 
 <footer class="sticky-footer bg-white">
@@ -188,3 +274,10 @@ body{
   </div>
 </footer>
 </html>
+
+
+<script>
+    var center = SMap.Coords.fromWGS84(17.071462, 48.154045);
+    var m = new SMap(JAK.gel("m"), center, 13);
+    m.addDefaultLayer(SMap.DEF_BASE).enable();
+</script>

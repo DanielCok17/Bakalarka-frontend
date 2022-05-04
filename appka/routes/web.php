@@ -29,7 +29,7 @@ Route::get('speedmeter',"NehodaController@spedmeter");
 
 Route::get('getid',"NehodaController@getid");
 
-Route::put('edit',"NehodaController@edit");
+Route::put('edit/{id}',"NehodaController@edit");
 
 Route::get('/email', function(){
     Mail::to('cokydano@gmail.com')->send(new NehodaMail());
