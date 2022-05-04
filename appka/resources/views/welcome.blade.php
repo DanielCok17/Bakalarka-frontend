@@ -276,8 +276,46 @@ body{
 </html>
 
 
+
 <script>
-    var center = SMap.Coords.fromWGS84(17.071462, 48.154045);
-    var m = new SMap(JAK.gel("m"), center, 13);
-    m.addDefaultLayer(SMap.DEF_BASE).enable();
+  var map_checkpoints = @json($data, JSON_HEX_APOS);
+    //console.log(map_checkpoints);
+    
+    var images_path = "{{ asset('images/') }}";
+    //console.log(images_path);
+    var app_url = '{{ url('/') }}';
+
+    var center = SMap.Coords.fromWGS84({{$data[0]['longitude']}} , {{$data[0]['latitude']}});
+        var m = new SMap(JAK.gel("m"), center, 11);
+        m.addDefaultLayer(SMap.DEF_BASE).enable();
+        m.addDefaultControls();
+        var coords = [];
+
+        var layer = new SMap.Layer.Marker();
+        m.addLayer(layer);
+        layer.enable();
+
+        var markers = map_checkpoints;
+
+        markers.forEach(function(marker)
+        {
+            var zn = JAK.mel("div");
+            zn.classList.add("map_marker","clickable");
+            zn.setAttribute('data-ltd', marker.latitude);
+            zn.setAttribute('data-lng',marker.longitude );
+
+            var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
+            var img = JAK.mel("img", { src: images_path+"/r_marker.png" });
+            img.setAttribute("title", marker.title);
+            img.setAttribute("data-toggle", "tooltip");
+
+            zn.appendChild(img);
+            var c = SMap.Coords.fromWGS84(marker.longitude,marker.latitude);
+            var mark = new SMap.Marker(c, marker.id, {url:zn});
+            layer.addMarker(mark);
+            coords.push(c);       
+        });
+        var cz = m.computeCenterZoom(coords);
+        m.setCenterZoom(cz[0], cz[1]);
 </script>
+

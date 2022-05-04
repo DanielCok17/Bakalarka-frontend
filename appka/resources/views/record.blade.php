@@ -200,6 +200,8 @@ body{
   <button class="navi">Navigovať k mieste nehody</button><br>
   <button class="pdf">Vygenerovať report PDF</button><br>
   <button class="email">Pošli report na mail</button><br><br>
+  <a href="/edit/$data['_id']" class="btn btn-primary">Button</a>
+
 
   </div>
 </body>
@@ -239,12 +241,15 @@ $(document).on('click',".email",function(){
 
 $(document).on('click',".nehoda",function(){    
   alert("Záchranné zložky boli odoslané na miesto nehody!")
+  window.open('https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}}, '_blank');
+
+  
 })
 
 $(document).on('click',".navi",function(){
   alert("Navihujem ťa k nehode")
   //location.href = 'https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}};  
-  window.open('https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}}, '_blank');
+  //window.open('https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}}, '_blank');
 })
 </script>
 

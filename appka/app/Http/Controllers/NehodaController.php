@@ -65,23 +65,11 @@ class NehodaController extends Controller
     }
 
     function edit($id){         
+        dd('test');
         Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id.'/edit', [
             'status' => 0
         ]);
         
         return ["Result"=>"Data has been saved"];
-    }
-
-    function vin(){
-        $apiPrefix = "https://api.vindecoder.eu/3.1";
-        $apikey = "YOUR_API_KEY";   // Your API key
-        $secretkey = "YOUR_API_SECRET";  // Your secret key
-        $id = "info";
-        $vin = "XXXDEF1GH23456789";
-
-        $controlsum = substr(sha1("{$vin}|{$id}|{$apikey}|{$secretkey}"), 0, 10);
-
-        $data = file_get_contents("{$apiPrefix}/{$apikey}/{$controlsum}/decode/info/{$vin}.json", false);
-        $result = json_decode($data);
     }
 }
