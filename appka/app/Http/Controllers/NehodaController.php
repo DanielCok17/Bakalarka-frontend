@@ -23,7 +23,7 @@ class NehodaController extends Controller
     function record($id){
         $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
         $data = $data[0];
-        //dd($data);
+        //dd($data['occupied_seats'][0]);
         
         return view('record',['data'=> $data]);
 
@@ -55,20 +55,20 @@ class NehodaController extends Controller
                 }
             }
             if($vozidla[$i]['type'] == "policia" ){
-                $zachrari_total_count++;
+                $policia_total_count++;
                 if($vozidla[$i]['availability'] == true){
-                    $zachrari_available_count++;
+                    $policia_available_count++;
                 }
             }
-            if($vozidla[$i]['type'] == "zachranka" ){
-                $zachrari_total_count++;
+            if($vozidla[$i]['type'] == "hasici" ){
+                $hasico_total_count++;
                 if($vozidla[$i]['availability'] == true){
-                    $zachrari_available_count++;
+                    $hasico_available_count++;
                 }
             }
         }
 
-        //dd($vozidla);
+        //dd($hasico_available_count);
 
         $data2 = [];
         $data3 = [];
@@ -93,6 +93,14 @@ class NehodaController extends Controller
         'count' => count($data),
         'count2' => count($data2),
         'count3' => count($data3),
+        'hasici_total' => $hasico_total_count,
+        'hasici_available' => $hasico_available_count,
+        'policia_total' => $policia_total_count,
+        'policia_available' => $policia_available_count,
+        'zachranka_total' => $zachrari_total_count,
+        'zachranka_available' => $zachrari_available_count
+
+
         ]);
     }
 

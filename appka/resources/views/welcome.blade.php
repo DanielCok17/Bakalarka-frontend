@@ -285,17 +285,17 @@ body{
             <tbody>
               <th  scope="row">1</th>
               <th style="text-align:center">Sanitka</th>
-              <th style="text-align:center">5/5</th>
+              <th style="text-align:center"> {{$zachranka_available}}/{{$zachranka_total}} </th>
             </tbody>
             <tbody>
               <th  scope="row">2</th>
               <th style="text-align:center">Polícia</th>
-              <th style="text-align:center">8/8</th>
+              <th style="text-align:center">{{$policia_available}}/{{$policia_total}}</th>
             </tbody>
             <tbody>
               <th  scope="row">4</th>
               <th style="text-align:center">Hasič</th>
-              <th style="text-align:center">4/4</th>
+              <th style="text-align:center">{{$hasici_available}}/{{$hasici_total}}</th>
             </tbody>
         </table>   
     </div> 

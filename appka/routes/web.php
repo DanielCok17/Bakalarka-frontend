@@ -42,4 +42,6 @@ Route::get('/email', function(){
 
 Route::get('/nehody',"PdfController@getAllAccidents");
 
+Route::get('/exportCsv',"PdfController@exportCsv");
+
 Route::get('/downloadPDF', "PdfController@downloadPDF");

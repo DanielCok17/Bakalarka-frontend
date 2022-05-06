@@ -41,7 +41,8 @@
 <div id="rasto"> 
 <a style="margin-right: 70%" href="http://127.0.0.1:8000/welcome" class="btn btn-info" role="button">Spať</a> <br>
 
-<a style="margin-right: 70%" href="#csv" class="btn btn-primary" role="button">Export csv</a> <br>
+<a href="http://127.0.0.1:8000/exportCsv" class="btn btn-info" role="button">Export csv</a> <br>
+
 
 
 <table  id="tabble" style="width:9%">
