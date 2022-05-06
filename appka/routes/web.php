@@ -21,7 +21,11 @@ Route::get('homepage',"NehodaController@main");
 
 Route::get('welcome',"NehodaController@welcome");
 
+Route::get('editedWelcome/{id}',"NehodaController@editedWelcome");
+
 Route::get('record/{id}',"NehodaController@record");
+
+Route::get('wait/{id}',"NehodaController@wait");
 
 Route::get('map',"NehodaController@map");
 

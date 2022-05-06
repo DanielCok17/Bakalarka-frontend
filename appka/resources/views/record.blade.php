@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-
-
+    <title>Nehoda</title>
 </head>
 <style>
 table, th, td {
@@ -142,9 +141,95 @@ body{
 }
 
 #car_img{
-  height: 500px; 
-  width: 700px;
-  align: left;
+  height: 300px; 
+  width: 500px;
+}
+
+#dots{
+  position:relative;
+}
+
+#a{
+  position:absolute;
+  top:10px;
+  left: 50px;
+}
+
+#b{
+  position:absolute;
+  top: 2px;
+  left: 150px;
+}
+#c{
+  position:absolute;
+  top:100px;
+  left: 500px;
+}
+
+.dot1 {
+  height: 30px;
+  width: 30px;
+  background-color: green;
+  border-radius: 50%;
+  position:absolute;
+  top: 430px;
+  left: 330px;
+}
+
+.dot2 {
+  height: 30px;
+  width: 30px;
+  background-color: green;
+  border-radius: 50%;
+  position:absolute;
+  top: 430px;
+  left: 430px;
+}
+
+.dot3 {
+  height: 30px;
+  width: 30px;
+  background-color: green;
+  border-radius: 50%;
+  position:absolute;
+  top: 520px;
+  left: 430px;
+}
+
+.dot4 {
+  height: 30px;
+  width: 30px;
+  background-color: green;
+  border-radius: 50%;
+  position:absolute;
+  top: 520px;
+  left: 380px;
+}
+
+.dot5 {
+  height: 30px;
+  width: 30px;
+  background-color: green;
+  border-radius: 50%;
+  position:absolute;
+  top: 520px;
+  left: 330px;
+}
+
+.dot6 {
+  height: 30px;
+  width: 30px;
+  background-color: green;
+  border-radius: 50%;
+  position:absolute;
+  top: 620px;
+  left: 570px;
+}
+
+#text{
+  position:absolute;
+  top: 30px;
+  left: 30px;
 }
 
 </style>
@@ -165,30 +250,47 @@ body{
                 </div>
 
 <h2 >Základné informácie autonehody</h2>
-<i class="fas fa-check-circle text-success text-center"></i>
+
+<a style="margin-right: auto" href="http://127.0.0.1:8000/welcome" class="btn btn-info" role="button">Spať</a> <br>
 
 <table style="width:100%">
   <tr>
-    <th>VIN</th>
-    <th>Pozícia pedálu</th>
-    <th>Rýchlosť</th>
-    <th>Akcelerácia</th>
-    <th>Rotácia</th>   
-    <th>Status</th>
+    <th style="text-align:center">VIN</th>
+    <th style="text-align:center">Rýchlosť</th>
+    <th style="text-align:center">Akcelerácia</th>
+    <th style="text-align:center">Rotácia</th>   
+    <th style="text-align:center">Na streche</th>
+    <th style="text-align:center">Počet prevrátení</th>
+    <th style="text-align:center">Uhol nárazu</th>
+    <th style="text-align:center">Vonkajšia teplota</th>
+    <th style="text-align:center">Gforce</th>
   </tr>
   <tr>
     <td>{{$data['vin']}}</td>
-    <td>{{$data['pedal_position']}}</td>
     <td>{{$data['speed']}} km/h</td>
     <td>{{$data['acceleration']}}</td>
     <td>{{$data['rotation']}}</td>
-    <td>{{$data['status']}}</td>
+    @if($data['on_roof']) <td>Áno</td> @endif
+    @if(!$data['on_roof']) <td>Nie</td> @endif
+    <td>{{$data['rotation_count']}}</td>
+    <td>{{$data['inpack_site']}} °</td>
+    <td>{{$data['temperature']}} °C</td>
+    <td>{{$data['gforce']}}</td>
   </tr>
 </table>
 <br>
-<button class="nehoda">Poslať záchranné zložky</button><br>
+<a href="http://127.0.0.1:8000/editedWelcome/{{$data['_id']}}" class="btn btn-success" role="button">Poslať záchranné zložky</a>
+    <div id="dots">
+      <span class="dot1"></span>
+      <span class="dot2"></span>
+      <span class="dot3"></span>
+      <span class="dot4"></span>
+      <span class="dot5"></span>
+      <span class="dot6"> <h5 id="text">Zobrazovanie obsadených miest</h5> </span>
 
-    <img src="{{ URL('images/car.jpg')}}" alt="accident car" id="car_img style="float: left; margin-right: 15px;">
+
+      <img src="{{ URL('images/car.jpg')}}" alt="accident car" id="car_img style="float: left; margin-right: 15px;">
+    </div>
  <div id="tach">
   <div style="text-align: left">
     <link href="css/speedometer.css" rel="stylesheet" type="text/css" />
@@ -197,11 +299,12 @@ body{
     <div id="m" style="height:380px"></div>
     <br>
   </div>
-  <button class="navi">Navigovať k mieste nehody</button><br>
-  <button class="pdf">Vygenerovať report PDF</button><br>
-  <button class="email">Pošli report na mail</button><br><br>
-  <a href="/edit/$data['_id']" class="btn btn-primary">Button</a>
 
+  <a href="https://www.google.com/maps/place/{{$data['latitude']}},{{$data['longitude']}}" class="btn btn-primary" role="button" target="_blank">Navigovať k mieste nehody</a> <br>
+
+  <a href="http://127.0.0.1:8000/downloadPDF" class="btn btn-info" role="button">Vygenerovať report PDF</a> <br>
+
+  <a href="http://127.0.0.1:8000/email" class="btn btn-secondary" role="button" target="_blank">Pošli report na mail</a> <br>
 
   </div>
 </body>
@@ -226,32 +329,6 @@ body{
 </footer>
 
 </html>
-
-
-<script>
-  $(document).on('click',".pdf",function(){
-    location.href = 'http://127.0.0.1:8000/downloadPDF';
-    alert("PDF bolo úspešne vygenerované")
-})
-
-$(document).on('click',".email",function(){
-  location.href = 'http://127.0.0.1:8000/email';  
-  alert("Mail bol úspešne vygenerované")
-})
-
-$(document).on('click',".nehoda",function(){    
-  alert("Záchranné zložky boli odoslané na miesto nehody!")
-  window.open('https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}}, '_blank');
-
-  
-})
-
-$(document).on('click',".navi",function(){
-  alert("Navihujem ťa k nehode")
-  //location.href = 'https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}};  
-  //window.open('https://www.google.com/maps/place/'+ {{$data['latitude']}}+','+{{$data['longitude']}}, '_blank');
-})
-</script>
 
 <script>
     var center = SMap.Coords.fromWGS84({{$data['longitude']}} , {{$data['latitude']}});

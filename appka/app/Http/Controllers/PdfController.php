@@ -11,6 +11,12 @@ class PdfController extends Controller
     //
     public function getAllAccidents (){
         $accidents = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();
+
+        for($i=0;$i <count($accidents);$i++){
+            $timestamp = strtotime( $accidents[$i]['created_at']);
+            $accidents[$i]['created_at'] = date('Y/m/d H:i:s', $timestamp );            
+        }
+
         return view('nehody',compact('accidents'));
 
     }
