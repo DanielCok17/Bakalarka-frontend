@@ -28,8 +28,6 @@ class PdfController extends Controller
         $accidents = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();
         $pdf = PDF::loadView('nehody',compact('accidents'));
 
-        //$this->exportCsv();
-
         return $pdf->download('nehoda_zaznam.pdf');
     }
 

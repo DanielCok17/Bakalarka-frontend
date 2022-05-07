@@ -9,6 +9,9 @@
     <script type="text/javascript">Loader.load();</script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script src="/lib/jquery.min.js"></script>
+    <script src="/lib/jquery.plugin.js"></script>
+
     <title>Welcome</title>
 </head>
 
@@ -211,6 +214,83 @@ body{
   margin: 20px;
 }
 
+.modal-open .modal {
+  display: flex !important;
+  align-items: center !important;
+}
+.modal-open .modal .modal-dialog {
+  flex-grow: 1;
+}
+
+#markerModal .modal-content {
+  overflow: hidden;
+  border-radius: 0px;
+  background-color: white;
+  border: none;
+}
+#markerModal .modal-content .place_description {
+  line-height: 20px;
+  height: 200px;
+  display: block;
+  overflow-y: auto;
+  text-align: justify;
+  padding: 10px;
+}
+#markerModal p {
+  line-height: 8px;
+  margin: 8px;
+  margin-right: 0px;
+}
+#markerModal .close {
+  padding-top: 5px;
+  font-size: 1.3rem;
+}
+#markerModal h5 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+#markerModal .info-icon {
+  display: inline-block;
+  width: 15px;
+  text-align: center;
+  margin-left: 8px;
+}
+#markerModal .big_icon {
+  color: #2980b9;
+  position: absolute;
+  font-size: 18rem;
+  left: 0;
+  top: 0;
+  margin-left: -70px;
+  margin-top: -35px;
+  opacity: 0.2;
+}
+#markerModal .description {
+  padding-top: 40px;
+  padding-right: 0px !important;
+  padding-bottom: 15px;
+}
+#markerModal .modal-header, #markerModal .modal-footer {
+  border: none;
+}
+@media (max-width: 480px) {
+  #markerModal .big_icon {
+    font-size: 12rem;
+  }
+  #markerModal h5 {
+    font-size: 1rem;
+  }
+  #markerModal p {
+    font-size: 0.8rem;
+  }
+  #markerModal .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7875rem;
+    line-height: 1.5;
+  }
+}
+
 
 </style>
 
@@ -344,12 +424,11 @@ body{
 
 
 <script>
-  var map_checkpoints = @json($data, JSON_HEX_APOS);
-    //console.log(map_checkpoints);
-    
+  var map_checkpoints = @json($data, JSON_HEX_APOS);    
     var images_path = "{{ asset('images/') }}";
     //console.log(images_path);
     var app_url = '{{ url('/') }}';
+
 
     var center = SMap.Coords.fromWGS84({{$data[0]['longitude']}} , {{$data[0]['latitude']}});
         var m = new SMap(JAK.gel("m"), center, 11);
@@ -361,7 +440,7 @@ body{
         m.addLayer(layer);
         layer.enable();
 
-        var markers = map_checkpoints;
+        var markers = map_checkpoints;      
 
         markers.forEach(function(marker)
         {
@@ -375,27 +454,20 @@ body{
             img.setAttribute("title", marker.title);
             img.setAttribute("data-toggle", "tooltip");
 
+            var card = new SMap.Card();
+            card.getHeader().innerHTML = "<strong>VIN</strong>";
+            card.getBody().innerHTML = marker.vin;
+
             zn.appendChild(img);
             var c = SMap.Coords.fromWGS84(marker.longitude,marker.latitude);
-            var mark = new SMap.Marker(c, marker.id, {url:zn});
+            var mark = new SMap.Marker(c, marker._id, marker.vin);
+            mark.decorate(SMap.Marker.Feature.Card, card);
             layer.addMarker(mark);
-            coords.push(c);       
+            coords.push(c);   
+
         });
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
-
-        $(document).on("click", ".map_marker", function () {
-        $("#markerModal .checkpoint_vin").text($(this).data("vin"));
-        $('[data-toggle="tooltip"]').tooltip("hide");
-        $("#markerModal").modal("show");
-         });
 </script>
 
-<script>
-     $(document).on("click", ".map_marker", function () {
-        $("#markerModal .checkpoint_vin").text($(this).data("vin"));
-        $('[data-toggle="tooltip"]').tooltip("hide");
-        $("#markerModal").modal("show");
-    });
-</script>
 
