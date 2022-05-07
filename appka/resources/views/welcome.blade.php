@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <script src="/lib/jquery.min.js"></script>
     <script src="/lib/jquery.plugin.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet"  type="text/css" href="{{ asset('css/welcome.css') }}">
 
     <title>Welcome</title>
@@ -30,7 +31,7 @@
 
     <div id="tables"> 
     <div style="display:inline-block; width:50%">
-    <h5>Nevyriešené autonehody</h5>
+    <h5><strong>Nevyriešené autonehody</strong></h5>
         <table class="table">
             <thead>
                 <tr>
@@ -73,7 +74,7 @@
                 </tbody>
             @endfor
         </table>   
-        
+        <div id="timer"></div> <button id="start">Start timer</button>
     </div>
 
     <div style="margin-left: auto">
@@ -189,6 +190,32 @@
         });
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
+</script>
+
+<script>
+    function incTimer() {
+        var currentMinutes = Math.floor(totalSecs / 60);
+        var currentSeconds = totalSecs % 60;
+        if(currentSeconds <= 9) currentSeconds = "0" + currentSeconds;
+        if(currentMinutes <= 9) currentMinutes = "0" + currentMinutes;
+        totalSecs++;
+          $("#timer").text(currentMinutes + ":" + currentSeconds);
+          setTimeout('incTimer()', 1000);
+        
+        
+    }
+
+    totalSecs = 0;
+
+    $(document).ready(function() {
+        $("#start").click(function() {
+            incTimer();
+            console.log(totalSecs);
+        });
+      
+
+       
+    });
 </script>
 
 

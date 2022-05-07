@@ -21,7 +21,11 @@
 </style>
 <body>
 <div id="rasto">
+    <br>
+    <br>
+
     <h1>Záchranné zložky boli poslané na miesto</h1>
+    <br>
     <h2>Prajete si napriek tomu prejsť na prehľad nehody?
     <a href="http://127.0.0.1:8000/record/{{$data['_id']}}" class="btn btn-success" role="button">Áno</a>
     <a href="http://127.0.0.1:8000/welcome" class="btn btn-secondary" role="button">Nie</a>

@@ -8,6 +8,7 @@
     <link rel="stylesheet"  type="text/css" href="{{ asset('css/record.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <title>Nehoda</title>
 </head>
 <style>
@@ -59,13 +60,15 @@
   </tr>
 </table>
 <br>
+
+
 <a href="http://127.0.0.1:8000/editedWelcome/{{$data['_id']}}" class="btn btn-success" role="button">Poslať záchranné zložky</a>
     <div id="dots">
       <span class="dot1"></span>
-      <span class="dot2"></span>
-      <span class="dot3"></span>
-      <span class="dot4"></span>
-      <span class="dot5"></span>
+      @if($data['occupied_seats'][1] == 1)<span class="dot2"></span>@endif
+      @if($data['occupied_seats'][2] == 1)<span class="dot3"></span>@endif
+      @if($data['occupied_seats'][3] == 1)<span class="dot4"></span>@endif
+      @if($data['occupied_seats'][4] == 1)<span class="dot5"></span>@endif
       <span class="dot6"> <h5 id="text">Zobrazovanie obsadených miest</h5> </span>
 
 
@@ -154,6 +157,7 @@
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
 </script>
+
 
 
 
