@@ -36,10 +36,9 @@ Route::get('getid',"NehodaController@getid");
 Route::put('edit/{id}',"NehodaController@edit");
 
 
-Route::get('/email/{id}', function($id){
-    //dd($id);
+Route::get('/email/{id}', function($id){    
     Mail::to('cokydano@gmail.com')->send(new NehodaMail($id));
-    return new NehodaMail($id);
+    return back();
 });
 
 Route::get('/nehody',"PdfController@getAllAccidents");

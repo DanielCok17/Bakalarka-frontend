@@ -21,7 +21,9 @@ class NehodaMail extends Mailable
     public function __construct($id)
     {
         //
+        //dd($id);
         $this->id = $id;
+        //dd("tuuuu somaef");
     }
 
     /**
@@ -29,10 +31,10 @@ class NehodaMail extends Mailable
      *
      * @return $this
      */
-    public function build($id)
+    public function build()
     {
-        dd("tuuuu som");
-        $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
+        //dd($this->id);
+        $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$this->id)->json();
         $data = $data[0];
         return $this->markdown('emails.nehoda',['data'=> $data]);
     }

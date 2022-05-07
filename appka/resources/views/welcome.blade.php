@@ -62,7 +62,7 @@
                 <th scope="col" style="text-align:center">VIN</th>
                 <th scope="col" style="text-align:center">Dátum</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" style="text-align:center">Čas</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,11 +72,10 @@
                     <th class="table-primary">{{$data2[$i]['vin']}}</th>
                     <th class="table-primary">{{$data2[$i]['created_at']}}</th>
                     <td><a href="http://127.0.0.1:8000/wait/{{$data2[$i]['_id']}}"  class="btn btn-primary" target="_blank">Zobraziť</a></td>
-                    <td><a href="http://127.0.0.1:8000/welcomeDelete/{{$data2[$i]['_id']}}"  class="btn btn-success" >Odstráňiť</a></td>
+                    <th><div id="timer"></div> <button id="start" style="display:none"></button></th>
                 </tbody>
             @endfor
-        </table>   
-        <div id="timer"></div> <button id="start">Start timer</button>
+        </table>           
     </div>
 
     <div style="margin-left: auto">
@@ -203,23 +202,32 @@
         totalSecs++;
           $("#timer").text(currentMinutes + ":" + currentSeconds);
           setTimeout('incTimer()', 1000);
-        
-        
     }
-
     totalSecs = 0;
 
     $(document).ready(function() {
         $("#start").click(function() {
-            incTimer();
-            console.log(totalSecs);
+            incTimer();            
         });
-      
+    });    
+</script>
 
-       
-    });
+<script>
+  $(document).ready(function() {
+    setTimeout(function() {
+        $('#start').click();
+    }, 1);
+});
 </script>
 
 
-
+<script>
+  $(document).ready(function() {
+    setTimeout(function() {
+        $('#start').click();
+        alert("Vráť spať zachranne zložky!");
+        //window.open('http://127.0.0.1:8000/welcomeDelete/{{$data2[0]['_id']}}');
+    }, 100000);
+});
+</script>
 
