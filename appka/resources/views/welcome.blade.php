@@ -19,11 +19,14 @@
 <body>
 <div id="rasto">  
     <br>
-    <div class="topnav">
+    <h2 >Záchranné centrum</h2><br>
+    <div class="topnav" style="text-align:left">
       <a class="active" href="">Domov</a>
       <a href="http://127.0.0.1:8000/nehody" target="_blank">Dataset nehôd</a>
       <a href="#contact">Kontakt</a>
     </div>
+
+    <br>
 
     <div id="tables"> 
     <div style="display:inline-block; width:50%">

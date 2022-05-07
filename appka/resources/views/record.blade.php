@@ -10,22 +10,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <title>Nehoda</title>
 </head>
-
+<style>
+  table, th, td {
+    border:1px solid black;
+  }
+  h2{text-align: center;}
+  td{text-align: center;}
+  input{text-align: center;}
+  body{
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+  }
+</style>
 <body>
   <div id="rasto">  
-<div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://127.0.0.1:8000/welcome">Domov</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://127.0.0.1:8000/welcome">Detail autonehody</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://127.0.0.1:8000/welcome">Dataset autonehôd</a>
-                        </li>
-                    </ul>
-                </div>
+  <br>
 
 <h2 >Základné informácie autonehody</h2>
 
@@ -109,18 +111,48 @@
 </html>
 
 <script>
+    var map_checkpoints = @json($data, JSON_HEX_APOS);    
+    var images_path = "{{ asset('images/') }}";
+    var app_url = '{{ url('/') }}';
+
+
     var center = SMap.Coords.fromWGS84({{$data['longitude']}} , {{$data['latitude']}});
-    var m = new SMap(JAK.gel("m"), center, 12);
-    m.addDefaultLayer(SMap.DEF_BASE).enable();
-    m.addDefaultControls();
+        var m = new SMap(JAK.gel("m"), center, 11);
+        m.addDefaultLayer(SMap.DEF_BASE).enable();
+        m.addDefaultControls();
+        var coords = [];
 
-    var layer = new SMap.Layer.Marker();
-    m.addLayer(layer);
-    layer.enable();
+        var layer = new SMap.Layer.Marker();
+        m.addLayer(layer);
+        layer.enable();
 
-    var options = {};
-    var marker = new SMap.Marker(center, "myMarker", options);
-    layer.addMarker(marker);
+        var marker = map_checkpoints;      
+
+        
+            var zn = JAK.mel("div");
+            zn.classList.add("map_marker","clickable");
+            zn.setAttribute('data-ltd', marker.latitude);
+            zn.setAttribute('data-lng',marker.longitude );
+
+            var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
+            var img = JAK.mel("img", { src: images_path+"/r_marker.png" });
+            img.setAttribute("title", marker.title);
+            img.setAttribute("data-toggle", "tooltip");
+
+            var card = new SMap.Card();
+            card.getHeader().innerHTML = "<strong>VIN</strong>";
+            card.getBody().innerHTML = marker.vin;
+
+            zn.appendChild(img);
+            var c = SMap.Coords.fromWGS84(marker.longitude,marker.latitude);
+            var mark = new SMap.Marker(c, marker._id, marker.vin);
+            mark.decorate(SMap.Marker.Feature.Card, card);
+            layer.addMarker(mark);
+            coords.push(c);   
+
+        
+        var cz = m.computeCenterZoom(coords);
+        m.setCenterZoom(cz[0], cz[1]);
 </script>
 
 
