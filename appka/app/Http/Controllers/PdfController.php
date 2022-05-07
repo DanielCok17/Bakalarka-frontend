@@ -24,9 +24,27 @@ class PdfController extends Controller
 
     }
 
-    public function downloadPDF(){
-        $accidents = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();
-        $pdf = PDF::loadView('nehody',compact('accidents'));
+    public function downloadPDF($id){
+        $accidents = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
+
+        $timestamp = strtotime( $accidents[0]['created_at']);
+        $accidents[0]['created_at'] = date('Y/m/d H:i:s', $timestamp );  
+
+        $count = 0;
+        for($i=0;$i<4;$i++){
+            if($accidents[0]['occupied_seats'][$i] == 1) {
+                $count++;
+            }
+        }
+
+        $data = [
+            'title' => 'Welcome to ItSolutionStuff.com',
+            'date' => date('m/d/Y'),
+            'accidents' => $accidents,
+            'count' => $count
+        ];
+          
+        $pdf = PDF::loadView('nehody2', $data);
 
         return $pdf->download('nehoda_zaznam.pdf');
     }
@@ -34,7 +52,7 @@ class PdfController extends Controller
     public function exportCsv(){
 
         $users = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();
-        $columns = array('num', 'vin','pedal_position','speed','acceleration','rotation','on_roof','rotation_count','inpack_site','temperature','gforce');
+        $columns = array('num', 'vin','pedal_position','speed','acceleration','rotation','on_roof','rotation_count','inpack_site','temperature','gforce','created_at');
 
         $headers = array(
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
@@ -54,6 +72,9 @@ class PdfController extends Controller
         fputcsv($handle,$columns, ";");
         $i=1;
         foreach ($users as $each_user) {
+            $timestamp = strtotime( $each_user['created_at']);
+            $each_user['created_at'] = date('Y/m/d H:i:s', $timestamp );               
+
             $row['num']          = $i;
             $row['vin']       = $each_user['vin'];
             $row['pedal_position']       = $each_user['pedal_position'];
@@ -65,10 +86,11 @@ class PdfController extends Controller
             $row['inpack_site']       = $each_user['inpack_site'];
             $row['temperature']       = $each_user['temperature'];
             $row['gforce']       = $each_user['gforce'];
-
+            $row['created_at']       = $each_user['created_at'];
+            
             fputcsv($handle, array($row['num'], $row['vin'],$row['pedal_position'],$row['speed'],$row['acceleration'],
                     $row['rotation'], $row['on_roof'] ,$row['rotation_count'],$row['inpack_site'],
-                    $row['temperature'],  $row['gforce'] ), ";");              
+                    $row['temperature'],  $row['gforce'],$row['created_at'] ), ";");              
             $i++;
         }
         fclose($handle);

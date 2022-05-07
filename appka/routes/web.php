@@ -35,15 +35,17 @@ Route::get('getid',"NehodaController@getid");
 
 Route::put('edit/{id}',"NehodaController@edit");
 
-Route::get('/email', function(){
-    Mail::to('cokydano@gmail.com')->send(new NehodaMail());
-    return new NehodaMail();
+
+Route::get('/email/{id}', function($id){
+    //dd($id);
+    Mail::to('cokydano@gmail.com')->send(new NehodaMail($id));
+    return new NehodaMail($id);
 });
 
 Route::get('/nehody',"PdfController@getAllAccidents");
 
 Route::get('/exportCsv',"PdfController@exportCsv");
 
-Route::get('/downloadPDF', "PdfController@downloadPDF");
+Route::get('/downloadPDF/{id}', "PdfController@downloadPDF");
 
 Route::get('welcomeDelete/{id}',"NehodaController@welcomeDelete");
