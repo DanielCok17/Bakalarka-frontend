@@ -4,11 +4,13 @@
     <meta charset="utf-8" />
     <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
     <script type="text/javascript">Loader.load();</script>
+    <link href="css/speedometer.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet"  type="text/css" href="{{ asset('css/record.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/speedometer.js"></script>
     <title>Nehoda</title>
 </head>
 <style>
@@ -28,11 +30,10 @@
 </style>
 <body>
   <div id="rasto">  
-  <br>
-
+  
 <h2 >Základné informácie autonehody</h2>
 
-<a style="margin-right: auto" href="http://127.0.0.1:8000/welcome" class="btn btn-info" role="button">Spať</a> <br>
+<a style="margin-right: auto" href="http://127.0.0.1:8000/welcome" class="btn btn-info" role="button">Spať</a> 
 
 <table style="width:100%">
   <tr>
@@ -61,8 +62,16 @@
 </table>
 <br>
 
+<div id="buttons">
 
-<a href="http://127.0.0.1:8000/editedWelcome/{{$data['_id']}}" class="btn btn-success" role="button">Poslať záchranné zložky</a>
+<a href="http://127.0.0.1:8000/editedWelcome/{{$data['_id']}}" class="btn btn-success" role="button">Poslať záchranné zložky</a> 
+
+<a href="https://www.google.com/maps/place/{{$data['latitude']}},{{$data['longitude']}}" id="btn" class="btn btn-primary" role="button" target="_blank">Navigovať k mieste nehody</a> 
+
+<a href="http://127.0.0.1:8000/downloadPDF/{{$data['_id']}}" class="btn btn-info" role="button" id="btn">Vygenerovať report PDF</a> 
+
+<a href="http://127.0.0.1:8000/email" class="btn btn-secondary" role="button" target="_blank" id="btn">Pošli report na mail</a> 
+</div>
     <div id="dots">
       <span class="dot1"></span>
       @if($data['occupied_seats'][1] == 1)<span class="dot2"></span>@endif
@@ -75,33 +84,19 @@
       <img src="{{ URL('images/car.jpg')}}" alt="accident car" id="car_img style="float: left; margin-right: 15px;">
     </div>
  <div id="tach">
+ <input id="myValues" style="display:none" />
+
   <div style="text-align: left">
     <link href="css/speedometer.css" rel="stylesheet" type="text/css" />
   </div> </div>       
     <input id="myValues" style="display:none" />    
     <div id="m" style="height:380px"></div>
     <br>
+    <br>
   </div>
-
-  <a href="https://www.google.com/maps/place/{{$data['latitude']}},{{$data['longitude']}}" id="btn" class="btn btn-primary" role="button" target="_blank">Navigovať k mieste nehody</a> <br>
-
-  <a href="http://127.0.0.1:8000/downloadPDF" class="btn btn-info" role="button" id="btn">Vygenerovať report PDF</a> <br>
-
-  <a href="http://127.0.0.1:8000/email" class="btn btn-secondary" role="button" target="_blank" id="btn">Pošli report na mail</a> <br>
 
   </div>
 </body>
-
-@if(isset($data))
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="js/speedometer.js"></script>
-<script type="text/javascript">
-    var speed = {{ $data['speed']}};
-    document.getElementById("myValues").value = speed;
-	$("#myValues").speedometer({divFact:10,eventListenerType:'keyup'});
-	$("#myValues2").speedometer({divFact:30});
-</script>
-@endif
 
 <footer class="sticky-footer bg-white">
   <div class="container my-auto">
@@ -156,6 +151,22 @@
         
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
+</script>
+
+<script type="text/javascript">
+    document.getElementById("myValues").value = 110;
+	$("#myValues").speedometer({divFact:10,eventListenerType:'keyup'});
+	$("#myValues2").speedometer({divFact:30});
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="js/speedometer.js"></script>
+<script type="text/javascript">
+    var speed = {{ $data['speed']}};
+    document.getElementById("myValues").value = speed;
+	$("#myValues").speedometer({divFact:10,eventListenerType:'keyup'});
+	$("#myValues2").speedometer({divFact:30});
 </script>
 
 

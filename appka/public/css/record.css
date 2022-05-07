@@ -12,7 +12,14 @@
     justify-content:center;
     align-items:center;
   }
-  
+  .btn{
+    margin: 30px;
+  }
+
+  #buttons{
+    display:flex;
+    flex-direction: row;
+  }
   .sticky-footer {
     width:100%;
     color: white;

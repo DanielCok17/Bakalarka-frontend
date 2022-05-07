@@ -20,7 +20,7 @@ class NehodaController extends Controller
         return view('homepage',['data'=> $data]);
     }
 
-    function record($id){
+    function record($id){        
         $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
         $data = $data[0];
         //dd($data['occupied_seats'][0]);
