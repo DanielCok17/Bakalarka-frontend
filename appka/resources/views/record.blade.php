@@ -68,7 +68,7 @@
 
 <a href="https://www.google.com/maps/place/{{$data['latitude']}},{{$data['longitude']}}" id="btn" class="btn btn-primary" role="button" target="_blank">Navigovať k mieste nehody</a> 
 
-<a href="http://127.0.0.1:8000/downloadPDF/{{$data['_id']}}" class="btn btn-info" role="button" id="btn">Vygenerovať report PDF</a> 
+<a href="http://127.0.0.1:8000/downloadPDF" class="btn btn-info" role="button" id="btn">Vygenerovať report PDF</a> 
 
 <a href="http://127.0.0.1:8000/email" class="btn btn-secondary" role="button" target="_blank" id="btn">Pošli report na mail</a> 
 </div>
