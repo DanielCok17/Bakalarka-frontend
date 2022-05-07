@@ -11,288 +11,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <script src="/lib/jquery.min.js"></script>
     <script src="/lib/jquery.plugin.js"></script>
+    <link rel="stylesheet"  type="text/css" href="{{ asset('css/welcome.css') }}">
 
     <title>Welcome</title>
 </head>
-
-<style>
-table, th, td {
-  border:1px solid black;
-}
-h2{text-align: center;}
-td{text-align: center;}
-input{text-align: center;}
-body{
-  width: 100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-#m{
-  width: 60%;  
-}
-
-#tach{
-  justify-content:left;
-}
-#rasto{
-  width:85%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
-.sticky-footer {
-  width:100%;
-  color: white;
-  background: #a62424;
-  background: linear-gradient(90deg, #a62424 42%, #741919 75%);
-}
-.sticky-footer h6 {
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-.sticky-footer .wide-container span, .sticky-footer .wide-container a {
-  color: rgba(255, 255, 255, 0.8);
-  margin-top: 7px;
-  transition: 0.3s;
-}
-.sticky-footer .wide-container a:hover {
-  color: white;
-  text-decoration: none;
-}
-.sticky-footer .social-links {
-  padding: 25px 0px;
-}
-.sticky-footer .social-links a {
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  background: white;
-  border-radius: 100%;
-  text-align: center;
-  margin: 5px;
-  color: #a62424;
-  transition: 0s !important;
-}
-.sticky-footer .social-links a i {
-  line-height: 30px;
-}
-.sticky-footer .social-links a:hover {
-  color: #841c1c;
-  transform: scale(1.1);
-}
-.sticky-footer .sponsors, .sticky-footer .links, .sticky-footer .contact_us {
-  padding: 25px 0px;
-}
-.sticky-footer .sponsors a {
-  vertical-align: top;
-  height: 100%;
-}
-.sticky-footer .sponsors img {
-  margin-top: -7px;
-}
-.sticky-footer .sponsors .nocr_logo {
-  margin-top: 15px;
-}
-.sticky-footer .sponsors .nocr_logo img {
-  border-radius: 3px;
-}
-.sticky-footer .sponsors .museum_logo {
-  margin-top: 15px;
-}
-.sticky-footer .sponsors .museum_logo img {
-  margin-left: 10px;
-}
-.sticky-footer .sponsors .slovakia_travel_logo {
-  margin-top: 15px;
-}
-.sticky-footer .sponsors .slovakia_travel_logo img {
-  margin-left: 10px;
-}
-.sticky-footer .footer-logo {
-  max-height: 30px;
-}
-.sticky-footer .copyright {
-  padding: 7px;
-  background: rgba(0, 0, 0, 0.2);
-}
-.sticky-footer .copyright a, .sticky-footer .copyright span {
-  color: white;
-}
-.sticky-footer .footer_logo {
-  height: 100px;
-  position: absolute;
-}
-
-.nav-item
-{ 
- {
-   border-bottom: 1px solid rgba(0,0,0,0.1);
-   &:last-child
-  {
-    border: none;
-  }
-}
-}
-
-.body {
-    min-height: 100vh;
-    max-width: 400px;
-    background-color: papayawhip; 
-    margin: 0 auto;
-}
-
-#car_img{
-  height: 500px; 
-  width: 700px;
-  align: left;
-}
-
-.table{
-    table-layout: auto;
-    width: 300px;
-}
-
-.body {
-    min-height: 100vh;
-    max-width: 400px;
-    background-color: papayawhip; 
-    margin: 0 auto;
-}
-
-#rasto{
-  width:85%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
-/* Add a black background color to the top navigation */
-.topnav {
-  background-color: #333;
-  overflow: hidden;
-}
-
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-
-#tables{
-  display:flex;
-  flex-direction: row;
-}
-
-#footer{
-  position:absolute;
-  bottom:0px;
-}
-
-.table{
-  margin: 20px;
-}
-
-.modal-open .modal {
-  display: flex !important;
-  align-items: center !important;
-}
-.modal-open .modal .modal-dialog {
-  flex-grow: 1;
-}
-
-#markerModal .modal-content {
-  overflow: hidden;
-  border-radius: 0px;
-  background-color: white;
-  border: none;
-}
-#markerModal .modal-content .place_description {
-  line-height: 20px;
-  height: 200px;
-  display: block;
-  overflow-y: auto;
-  text-align: justify;
-  padding: 10px;
-}
-#markerModal p {
-  line-height: 8px;
-  margin: 8px;
-  margin-right: 0px;
-}
-#markerModal .close {
-  padding-top: 5px;
-  font-size: 1.3rem;
-}
-#markerModal h5 {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-#markerModal .info-icon {
-  display: inline-block;
-  width: 15px;
-  text-align: center;
-  margin-left: 8px;
-}
-#markerModal .big_icon {
-  color: #2980b9;
-  position: absolute;
-  font-size: 18rem;
-  left: 0;
-  top: 0;
-  margin-left: -70px;
-  margin-top: -35px;
-  opacity: 0.2;
-}
-#markerModal .description {
-  padding-top: 40px;
-  padding-right: 0px !important;
-  padding-bottom: 15px;
-}
-#markerModal .modal-header, #markerModal .modal-footer {
-  border: none;
-}
-@media (max-width: 480px) {
-  #markerModal .big_icon {
-    font-size: 12rem;
-  }
-  #markerModal h5 {
-    font-size: 1rem;
-  }
-  #markerModal p {
-    font-size: 0.8rem;
-  }
-  #markerModal .btn {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.7875rem;
-    line-height: 1.5;
-  }
-}
-
-
-</style>
 
 <body>
 <div id="rasto">  
@@ -326,7 +48,6 @@ body{
             @endfor
         </table>   
     </div> 
-
 
     <div style="display:inline-block ; width:50%">
     <h5>Riešené autonehody</h5>
@@ -421,12 +142,9 @@ body{
 </footer>
 </html>
 
-
-
 <script>
   var map_checkpoints = @json($data, JSON_HEX_APOS);    
     var images_path = "{{ asset('images/') }}";
-    //console.log(images_path);
     var app_url = '{{ url('/') }}';
 
 
@@ -469,5 +187,7 @@ body{
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
 </script>
+
+
 
 
