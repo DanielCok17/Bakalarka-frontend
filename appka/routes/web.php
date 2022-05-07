@@ -45,3 +45,5 @@ Route::get('/nehody',"PdfController@getAllAccidents");
 Route::get('/exportCsv',"PdfController@exportCsv");
 
 Route::get('/downloadPDF', "PdfController@downloadPDF");
+
+Route::get('welcomeDelete/{id}',"NehodaController@welcomeDelete");

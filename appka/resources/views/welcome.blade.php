@@ -62,6 +62,7 @@
                 <th scope="col" style="text-align:center">VIN</th>
                 <th scope="col" style="text-align:center">Dátum</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -71,6 +72,7 @@
                     <th class="table-primary">{{$data2[$i]['vin']}}</th>
                     <th class="table-primary">{{$data2[$i]['created_at']}}</th>
                     <td><a href="http://127.0.0.1:8000/wait/{{$data2[$i]['_id']}}"  class="btn btn-primary" target="_blank">Zobraziť</a></td>
+                    <td><a href="http://127.0.0.1:8000/welcomeDelete/{{$data2[$i]['_id']}}"  class="btn btn-success" >Odstráňiť</a></td>
                 </tbody>
             @endfor
         </table>   
