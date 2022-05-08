@@ -23,8 +23,6 @@ class NehodaController extends Controller
     function record($id){        
         $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
         $data = $data[0];
-        //dd($data);
-        //dd($data['occupied_seats'][0]);
         
         return view('record',['data'=> $data]);
 
@@ -103,8 +101,24 @@ class NehodaController extends Controller
     }
 
     function welcomeDelete($id){
-        $delete = Http::delete('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
+        //$delete = Http::delete('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
 
+
+        $zaznam = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/zaznam')->json(); 
+        $search_index = 0;
+        for($i=0; $i< count($zaznam); $i++){
+            if($zaznam[$i]['id_nehody'] == $id)
+            $search_index = $i;
+        }
+        $vehicle_to_free = $zaznam[$search_index]['vehicle'];
+        $this->set_available_value(true,$vehicle_to_free);
+        
+        Http::delete('https://bakalarka-app.herokuapp.com/api/bakalarka/zaznam'.$zaznam[$search_index]['_id']);
+
+        Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id.'/edit', [
+            'status' => -1
+        ]);    
+        
 
         $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();      
         $vozidla = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla')->json(); 
@@ -189,10 +203,17 @@ class NehodaController extends Controller
 
     function editedWelcome($id){
         $data_temp = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
-        $data_temp = $data_temp[0];
-        $id = $data_temp['_id'];
+        if(isset($data_temp[0])){
+                $data_temp = $data_temp[0];
+                $id = $data_temp['_id'];
+                        
+                $a = $this->edit($id); //PUT FUNCTION
+                $b = $this->find_vehicle_count($id);     // !!!!!!!!!!!!!!
+            
+                //$this->help();
                 
-        $a = $this->edit($id); //PUT FUNCTION
+        }
+        
 
          $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();      
         $vozidla = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla')->json(); 
@@ -262,8 +283,116 @@ class NehodaController extends Controller
         Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id.'/edit', [
             'status' => 0
         ]);        
+        //Http::delete('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id);
+
         return ["Result"=>"Data has been saved"];
     }
 
+    function find_vehicle_count($id){
+        $result = $this->set_vehicle($id);  
+       
+            $a = Http::post('https://bakalarka-app.herokuapp.com/api/bakalarka/zaznam/', [
+                'id_nehody' => $id,
+                'vehicle' => $result,
+                'resolved' => false
+            ]);
 
+            $a = json_decode($a, TRUE);
+            if(isset($a['msg']) && $a['msg'] == "Vehicle added successfully!"){
+                $this->set_available_value(false,$result); ////////////////////False 
+            }
+
+            if(isset($a['errors']) && $a['errors'][0]['msg'] != "Nehoda už riešená"){
+                $this->set_available_value(false,$result); ////////////////////False 
+            }
+        
+    }
+
+    function which_vehidlce($id){
+        $hasici = $zachranka = $policia = 1;
+        $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
+        $data = $data[0];
+        $count_people = 0;
+
+        for($i=0;$i<4;$i++){
+            if($data['occupied_seats'][$i] == 1) {
+                $count_people++;
+            }
+        }
+
+        if($count_people >=4){
+            $zachranka++;
+        }
+
+        if($count_people ==5){
+            $policia++;
+        }        
+
+        if($data['gforce'] >14 || $data['on_roof'] || $data['rotation_count'] >2 || $data['speed'] >110){
+            $hasici++;
+        }
+        return ["hasici" => $hasici, "policia" => $policia, "zachranka" => $zachranka];
+    }
+
+    function set_vehicle($id){
+        $result = $this->which_vehidlce($id);
+        $vehicle_vehicle = [];
+        $vozidla = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla')->json(); 
+        
+        //hacisi
+        $has=0;        
+        for($i=0;$i<count($vozidla);$i++){
+            if($has < $result['hasici']){
+                if($vozidla[$i]['type'] == "hasici" && $vozidla[$i]['availability'] ){
+                    $has++;
+                    array_push($vehicle_vehicle,$vozidla[$i]['_id']);
+                }
+            }                
+        }     
+        
+        //pilicia
+        $pol=0;        
+        for($i=0;$i<count($vozidla);$i++){
+            if($pol < $result['policia']){
+                if($vozidla[$i]['type'] == "policia" && $vozidla[$i]['availability'] ){
+                    $pol++;
+                    array_push($vehicle_vehicle,$vozidla[$i]['_id']);
+                }
+            }                
+        } 
+        //zachranka
+        $zach=0;        
+        for($i=0;$i<count($vozidla);$i++){
+            if($zach < $result['zachranka']){
+                if($vozidla[$i]['type'] == "zachranka" && $vozidla[$i]['availability'] ){
+                    $zach++;
+                    array_push($vehicle_vehicle,$vozidla[$i]['_id']);
+                }
+            }                
+        } 
+
+        return $vehicle_vehicle;
+    }
+
+    function set_available_value($bool,$result){
+
+        for($i=0 ; $i< count($result) ; $i++){
+            Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla/'.$result[$i], [
+                'availability' => $bool
+            ]);  
+
+        }
+
+    }
+    //SET all vehicle available
+    function help (){
+        $vozidla = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla')->json(); 
+
+        for($i=0 ; $i< count($vozidla) ; $i++){
+            Http::put('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla/'.$vozidla[$i]['_id'], [
+                'availability' => true
+            ]);  
+
+        }
+    }
 }

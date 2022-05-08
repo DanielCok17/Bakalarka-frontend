@@ -39,6 +39,7 @@
                 <th scope="col" style="text-align:center">VIN</th>
                 <th scope="col">Dátum</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +49,7 @@
                     <th class="table-danger">{{$data3[$i]['vin']}}</th>
                     <th class="table-danger">{{$data3[$i]['created_at']}}</th>
                     <td><a href="http://127.0.0.1:8000/record/{{$data3[$i]['_id']}}"  class="btn btn-danger" target="_blank">Zobraziť</a></td>
+                    <th><div id="timer"></div> <button id="start" style="display:none"></button></th>
                 </tbody>
             @endfor
         </table>   
@@ -62,7 +64,7 @@
                 <th scope="col" style="text-align:center">VIN</th>
                 <th scope="col" style="text-align:center">Dátum</th>
                 <th scope="col"></th>
-                <th scope="col" style="text-align:center">Čas</th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -72,7 +74,7 @@
                     <th class="table-primary">{{$data2[$i]['vin']}}</th>
                     <th class="table-primary">{{$data2[$i]['created_at']}}</th>
                     <td><a href="http://127.0.0.1:8000/wait/{{$data2[$i]['_id']}}"  class="btn btn-primary" target="_blank">Zobraziť</a></td>
-                    <th><div id="timer"></div> <button id="start" style="display:none"></button></th>
+                    <td><a href="http://127.0.0.1:8000/welcomeDelete/{{$data2[$i]['_id']}}"  class="btn btn-success" target="_blank">Vyriešiť</a></td>
                 </tbody>
             @endfor
         </table>           
@@ -108,6 +110,7 @@
 
     </div>
 
+    <h1 id="demo"></h1> 
 
     <br>
     <h4>Nehody</h4>
@@ -135,7 +138,6 @@
         </div>
       </div>
     </div>
-
 </body>
 
 <footer id="footer" class="sticky-footer bg-white">
@@ -193,6 +195,8 @@
         m.setCenterZoom(cz[0], cz[1]);
 </script>
 
+<!-- Nevyriešené nehody TIMER     -->
+
 <script>
     function incTimer() {
         var currentMinutes = Math.floor(totalSecs / 60);
@@ -222,12 +226,43 @@
 
 
 <script>
-  $(document).ready(function() {
+   $(document).ready(function() {
     setTimeout(function() {
         $('#start').click();
-        alert("Vráť spať zachranne zložky!");
+        myFunction();
+        //alert("Vráť spať zachranne zložky!");
         //window.open('http://127.0.0.1:8000/welcomeDelete/{{$data2[0]['_id']}}');
-    }, 100000);
+    }, 10000);
 });
 </script>
+
+<script>
+   $(document).ready(function() {
+    setTimeout(function() {
+        $('#start').click();
+        alert("Vráť spať zachranne zložky!");       
+        //window.open('http://127.0.0.1:8000/welcomeDelete/{{$data2[0]['_id']}}');  // !!!!!!!!!!!!!// !!!!!!!!!!!!!
+        
+    }, 20000);
+});
+</script>
+
+<script>
+function myFunction() {
+  var txt;
+  if (confirm("Prajete si vyriešiť autonehodu manuálne?!")) {
+    txt = "Manuálne vyriešenie nehody!";
+  } else {
+    txt = "Nehoda bude vyriešená automaticky!";    
+
+      //window.open('http://127.0.0.1:8000/editedWelcome/    // !!!!!!!!!!!!! $data3[0]['_id']}}')
+  }
+  document.getElementById("demo").innerHTML = txt;
+}
+</script>
+
+<!-- Vyriešené nehody TIMER     -->
+
+
+
 
