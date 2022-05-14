@@ -24,7 +24,8 @@
     <br>
     <br>
 
-    <h1>Záchranné zložky boli poslané na miesto</h1>
+    <h1>Záchranné zložky boli poslané, ich predpokladaný príchod na miesto nehody je <strong> {{$time}} </strong></h1>
+    <br>
     <br>
     <h2>Prajete si napriek tomu prejsť na prehľad nehody?
     <a href="http://127.0.0.1:8000/record/{{$data['_id']}}" class="btn btn-success" role="button">Áno</a>

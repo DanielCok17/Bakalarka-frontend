@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Nehoda;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+
 
 class NehodaController extends Controller
 {
@@ -23,16 +25,50 @@ class NehodaController extends Controller
     function record($id){        
         $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
         $data = $data[0];
-        
-        return view('record',['data'=> $data]);
+        $counter = 0;
+        for($i=0;$i<5;$i++){
+            if($data['occupied_seats'][$i] == 1)    $counter++;
+        }
+       
+
+        $timestamp = strtotime( $data['created_at']);
+        $data['created_at'] = date('Y/m/d H:i:s', $timestamp );  
+
+        //dd($data['created_at']);        
+
+        $time = strtotime($data['created_at']);
+
+        $newformat = date('Y/m/d H:i:s',$time);
+
+        $dt = Carbon::create(date('Y', $timestamp), date('m', $timestamp), date('d', $timestamp), date('H', $timestamp),date('i', $timestamp) , date('s', $timestamp));
+        $dt->addMinutes(15);
+
+        return view('record',['data'=> $data, 'people' => $counter, 'time' => $dt]);
 
     }
 
     function wait($id){
         $data = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda/'.$id)->json();
         $data = $data[0];
+        $counter = 0;
+        for($i=0;$i<5;$i++){
+            if($data['occupied_seats'][$i] == 1)    $counter++;
+        }
+       
+
+        $timestamp = strtotime( $data['created_at']);
+        $data['created_at'] = date('Y/m/d H:i:s', $timestamp );  
+
+        //dd($data['created_at']);        
+
+        $time = strtotime($data['created_at']);
+
+        $newformat = date('Y/m/d H:i:s',$time);
+
+        $dt = Carbon::create(date('Y', $timestamp), date('m', $timestamp), date('d', $timestamp), date('H', $timestamp),date('i', $timestamp) , date('s', $timestamp));
+        $dt->addMinutes(15);
                 
-        return view('wait',['data'=> $data]);
+        return view('wait',['data'=> $data, 'people' => $counter, 'time' => $dt]);
     }
 
     function welcome(){
@@ -82,6 +118,7 @@ class NehodaController extends Controller
                 array_push($data3,$data[$i]);
             }
         }
+
         
         return view('welcome',
         ['data'=> $data,
@@ -95,7 +132,8 @@ class NehodaController extends Controller
         'policia_total' => $policia_total_count,
         'policia_available' => $policia_available_count,
         'zachranka_total' => $zachrari_total_count,
-        'zachranka_available' => $zachrari_available_count
+        'zachranka_available' => $zachrari_available_count,
+        'empty' => empty($data3)
         ]);
 
     }
@@ -166,6 +204,7 @@ class NehodaController extends Controller
                 array_push($data3,$data[$i]);
             }
         }
+        
         
         return view('welcome',
         ['data'=> $data,
@@ -395,4 +434,31 @@ class NehodaController extends Controller
 
         }
     }
+
+    function addZachranka(){
+        Http::post('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla', [
+            "num" => 1,
+            "type" => "zachranka",
+            "availability" => true
+        ]);  
+        return back()->withInput();    
+    }
+
+    function addPolicia(){
+        Http::post('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla', [
+            "num" => 1,
+            "type" => "policia",
+            "availability" => true
+        ]); 
+        return back()->withInput();    
+    }
+
+    function addHasici(){
+        Http::post('https://bakalarka-app.herokuapp.com/api/bakalarka/vozidla', [
+            "num" => 1,
+            "type" => "hasici",
+            "availability" => true
+        ]); 
+        return back()->withInput();
+        }
 }

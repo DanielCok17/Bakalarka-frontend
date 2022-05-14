@@ -21,11 +21,8 @@
 <div id="rasto">  
     <br>
     <h2 >Záchranné centrum</h2><br>
-    <div class="topnav" style="text-align:left">
-      <a class="active" href="">Domov</a>
-      <a href="http://127.0.0.1:8000/nehody" target="_blank">Dataset nehôd</a>
-      <a href="#contact">Kontakt</a>
-    </div>
+   <br>
+   
 
     <br>
 
@@ -64,7 +61,7 @@
                 <th scope="col" style="text-align:center">VIN</th>
                 <th scope="col" style="text-align:center">Dátum</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
+                @if($zachranka_available == 0 || $policia_available == 0 || $hasici_available == 0)<th scope="col"></th>@endif
                 </tr>
             </thead>
             <tbody>
@@ -88,22 +85,26 @@
                 <th scope="col">č.</th>
                 <th scope="col" style="text-align:center">Typ zložiek</th>
                 <th scope="col" style="text-align:center">Dostupnosť</th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
               <th  scope="row">1</th>
               <th style="text-align:center">Sanitka</th>
               <th style="text-align:center"> {{$zachranka_available}}/{{$zachranka_total}} </th>
+              @if($zachranka_available  == 0)<td><a href="http://127.0.0.1:8000/addZachranka"  class="btn btn-primary" target="_blank">Povolať</a></td>@endif
             </tbody>
             <tbody>
               <th  scope="row">2</th>
               <th style="text-align:center">Polícia</th>
               <th style="text-align:center">{{$policia_available}}/{{$policia_total}}</th>
+              @if($policia_available  == 0)<td><a href="http://127.0.0.1:8000/addPolicia"  class="btn btn-primary" target="_blank">Povolať</a></td>@endif
             </tbody>
             <tbody>
               <th  scope="row">4</th>
               <th style="text-align:center">Hasič</th>
               <th style="text-align:center">{{$hasici_available}}/{{$hasici_total}}</th>
+              @if($hasici_available  == 0)<td><a href="http://127.0.0.1:8000/addHasici"  class="btn btn-primary" target="_blank">Povolať</a></td>@endif
             </tbody>
         </table>   
     </div> 
@@ -112,11 +113,14 @@
 
     <h1 id="demo"></h1> 
 
+
     <br>
     <h4>Nehody</h4>
       <div id="m" style="height:380px"></div>
       <br>
     </div> 
+    <br>
+    <a href="http://127.0.0.1:8000/nehody" class="btn btn-success" role="button">Všetky nehody</a>
     <br>
     <!-- Modal -->
     <div class="modal fade" id="markerModal" tabindex="-1" role="dialog" aria-labelledby="markerModalLabel" aria-hidden="true" position="fixed">
@@ -154,8 +158,7 @@
     var images_path = "{{ asset('images/') }}";
     var app_url = '{{ url('/') }}';
 
-
-    var center = SMap.Coords.fromWGS84({{$data[0]['longitude']}} , {{$data[0]['latitude']}});
+    var center = SMap.Coords.fromWGS84(17.0713 , 48.154);
         var m = new SMap(JAK.gel("m"), center, 11);
         m.addDefaultLayer(SMap.DEF_BASE).enable();
         m.addDefaultControls();
@@ -169,28 +172,31 @@
 
         markers.forEach(function(marker)
         {
-            var zn = JAK.mel("div");
-            zn.classList.add("map_marker","clickable");
-            zn.setAttribute('data-ltd', marker.latitude);
-            zn.setAttribute('data-lng',marker.longitude );
+          
+            if(marker.status != -1) {
+              var zn = JAK.mel("div");
+              zn.classList.add("map_marker","clickable");
+              zn.setAttribute('data-ltd', marker.latitude);
+              zn.setAttribute('data-lng',marker.longitude );
 
-            var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
-            var img = JAK.mel("img", { src: images_path+"/r_marker.png" });
-            img.setAttribute("title", marker.title);
-            img.setAttribute("data-toggle", "tooltip");
+              var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
+              var img = JAK.mel("img", { src: images_path+"/r_marker.png" });
+              img.setAttribute("title", marker.title);
+              img.setAttribute("data-toggle", "tooltip");
 
-            var card = new SMap.Card();
-            card.getHeader().innerHTML = "<strong>VIN</strong>";
-            card.getBody().innerHTML = marker.vin;
+              var card = new SMap.Card();
+              card.getHeader().innerHTML = "<strong>VIN</strong>";
+              card.getBody().innerHTML = marker.vin;
 
-            zn.appendChild(img);
-            var c = SMap.Coords.fromWGS84(marker.longitude,marker.latitude);
-            var mark = new SMap.Marker(c, marker._id, marker.vin);
-            mark.decorate(SMap.Marker.Feature.Card, card);
-            layer.addMarker(mark);
-            coords.push(c);   
-
+              zn.appendChild(img);
+              var c = SMap.Coords.fromWGS84(marker.longitude,marker.latitude);
+              var mark = new SMap.Marker(c, marker._id, marker.vin);
+              mark.decorate(SMap.Marker.Feature.Card, card);
+              layer.addMarker(mark);
+              coords.push(c);
+            }             
         });
+
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
 </script>
@@ -218,32 +224,36 @@
 
 <script>
   $(document).ready(function() {
-    setTimeout(function() {
+    //if({{$empty}} == false) {
+        setTimeout(function() {
         $('#start').click();
     }, 1);
+    //}    
 });
 </script>
 
 
 <script>
    $(document).ready(function() {
-    setTimeout(function() {
+    //if({{$empty}} == false){
+      setTimeout(function() {
         $('#start').click();
         myFunction();
         //alert("Vráť spať zachranne zložky!");
-        //window.open('http://127.0.0.1:8000/welcomeDelete/{{$data2[0]['_id']}}');
     }, 10000);
+        
 });
 </script>
 
 <script>
    $(document).ready(function() {
-    setTimeout(function() {
+    //if({{$empty}} == false){
+      setTimeout(function() {
         $('#start').click();
-        alert("Vráť spať zachranne zložky!");       
-        //window.open('http://127.0.0.1:8000/welcomeDelete/{{$data2[0]['_id']}}');  // !!!!!!!!!!!!!// !!!!!!!!!!!!!
-        
+        alert("Vráť spať zachranne zložky!"); 
+       
     }, 20000);
+    //}
 });
 </script>
 
@@ -253,9 +263,8 @@ function myFunction() {
   if (confirm("Prajete si vyriešiť autonehodu manuálne?!")) {
     txt = "Manuálne vyriešenie nehody!";
   } else {
-    txt = "Nehoda bude vyriešená automaticky!";    
+    txt = "Nehoda bude vyriešená automaticky!";  
 
-      //window.open('http://127.0.0.1:8000/editedWelcome/    // !!!!!!!!!!!!! $data3[0]['_id']}}')
   }
   document.getElementById("demo").innerHTML = txt;
 }

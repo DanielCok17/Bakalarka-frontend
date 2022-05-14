@@ -8,6 +8,9 @@ use PDF;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Response;
+use DateTime;
+use Carbon\Carbon;
+
 
 class PdfController extends Controller
 {
@@ -19,6 +22,7 @@ class PdfController extends Controller
             $timestamp = strtotime( $accidents[$i]['created_at']);
             $accidents[$i]['created_at'] = date('Y/m/d H:i:s', $timestamp );            
         }
+        
 
         return view('nehody',compact('accidents'));
 
@@ -30,6 +34,21 @@ class PdfController extends Controller
         $timestamp = strtotime( $accidents[0]['created_at']);
         $accidents[0]['created_at'] = date('Y/m/d H:i:s', $timestamp );  
 
+        //dd(strtotime($accidents[0]['created_at']));
+
+        $time = strtotime($accidents[0]['created_at']);
+
+        $newformat = date('Y/m/d H:i:s',$time);
+
+    
+
+        $dt = Carbon::create(date('Y', $timestamp), date('m', $timestamp), date('d', $timestamp), date('H', $timestamp),date('i', $timestamp) , date('s', $timestamp));
+        $dt->addMinutes(15);
+
+        //$accidents[0]['created_at'] = $dt;
+
+        //dd($dt->toDateTimeString());
+
         $count = 0;
         for($i=0;$i<4;$i++){
             if($accidents[0]['occupied_seats'][$i] == 1) {
@@ -38,10 +57,9 @@ class PdfController extends Controller
         }
 
         $data = [
-            'title' => 'Welcome to ItSolutionStuff.com',
-            'date' => date('m/d/Y'),
             'accidents' => $accidents,
-            'count' => $count
+            'count' => $count,
+            'time' => $dt
         ];
           
         $pdf = PDF::loadView('nehody2', $data);
@@ -52,7 +70,7 @@ class PdfController extends Controller
     public function exportCsv(){
 
         $users = Http::get('https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda')->json();
-        $columns = array('num', 'vin','pedal_position','speed','acceleration','rotation','on_roof','rotation_count','inpack_site','temperature','gforce','created_at');
+        $columns = array('num', 'vin','pedal_position','speed','rotation_count','inpack_site','temperature','gforce','created_at');
 
         $headers = array(
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
@@ -79,17 +97,13 @@ class PdfController extends Controller
             $row['vin']       = $each_user['vin'];
             $row['pedal_position']       = $each_user['pedal_position'];
             $row['speed']       = $each_user['speed'];
-            $row['acceleration']       = $each_user['acceleration'];
-            $row['rotation']       = $each_user['rotation'];
-            $row['on_roof']       = $each_user['on_roof'];
             $row['rotation_count']       = $each_user['rotation_count'];
             $row['inpack_site']       = $each_user['inpack_site'];
             $row['temperature']       = $each_user['temperature'];
             $row['gforce']       = $each_user['gforce'];
             $row['created_at']       = $each_user['created_at'];
             
-            fputcsv($handle, array($row['num'], $row['vin'],$row['pedal_position'],$row['speed'],$row['acceleration'],
-                    $row['rotation'], $row['on_roof'] ,$row['rotation_count'],$row['inpack_site'],
+            fputcsv($handle, array($row['num'], $row['vin'],$row['pedal_position'],$row['speed'],$row['rotation_count'],$row['inpack_site'],
                     $row['temperature'],  $row['gforce'],$row['created_at'] ), ";");              
             $i++;
         }

@@ -48,3 +48,9 @@ Route::get('/exportCsv',"PdfController@exportCsv");
 Route::get('/downloadPDF/{id}', "PdfController@downloadPDF");
 
 Route::get('welcomeDelete/{id}',"NehodaController@welcomeDelete");
+
+Route::get('addZachranka',"NehodaController@addZachranka");
+
+Route::get('addPolicia',"NehodaController@addPolicia");
+
+Route::get('addHasici',"NehodaController@addHasici");

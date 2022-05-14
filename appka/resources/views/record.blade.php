@@ -38,26 +38,28 @@
 <table style="width:100%">
   <tr>
     <th style="text-align:center">VIN</th>
+    <th style="text-align:center">Počet ľudí vo vozidle</th>
     <th style="text-align:center">Rýchlosť</th>
-    <th style="text-align:center">Akcelerácia</th>
-    <th style="text-align:center">Rotácia</th>   
-    <th style="text-align:center">Na streche</th>
+    <th style="text-align:center">Pozícia vozidla</th>
     <th style="text-align:center">Počet prevrátení</th>
     <th style="text-align:center">Uhol nárazu</th>
     <th style="text-align:center">Vonkajšia teplota</th>
     <th style="text-align:center">Gforce</th>
+    <th style="text-align:center">Čas</th>
   </tr>
   <tr>
     <td>{{$data['vin']}}</td>
+    <td>{{$people}}</td>
     <td>{{$data['speed']}} km/h</td>
-    <td>{{$data['acceleration']}}</td>
-    <td>{{$data['rotation']}}</td>
-    @if($data['on_roof']) <td>Áno</td> @endif
-    @if(!$data['on_roof']) <td>Nie</td> @endif
+    @if(isset($data['car_position']) &&  $data['car_position'][0] == 0) <td>Na kolesách</td> @endif
+    @if(isset($data['car_position']) &&  $data['car_position'][0] == 1) <td>Na ľavom boku</td> @endif
+    @if(isset($data['car_position']) &&  $data['car_position'][0] == 2) <td>Na streche</td> @endif
+    @if(isset($data['car_position']) &&  $data['car_position'][0] == 3) <td>Na pravom boku</td> @endif
     <td>{{$data['rotation_count']}}</td>
-    <td>{{$data['inpack_site']}} °</td>
+    <td>{{round($data['inpack_site'], 2)}} °</td>
     <td>{{$data['temperature']}} °C</td>
-    <td>{{$data['gforce']}}</td>
+    <td>{{round($data['gforce'],2)}}</td>
+    <td>{{$data['created_at']}}</td>
   </tr>
 </table>
 <br>
@@ -83,8 +85,11 @@
       @if($data['occupied_seats'][4] == 1)<span class="dot5"></span>@endif
       <span class="dot6"> <h5 id="text">Zobrazovanie obsadených miest</h5> </span>
 
+      <img src="{{ URL('images/car2.png')}}" alt="accident car" id="car_img style="float: left; margin-right: 15px;">
 
-      <img src="{{ URL('images/car.jpg')}}" alt="accident car" id="car_img style="float: left; margin-right: 15px;">
+      @if($data['inpack_site'] == 0 ) <img src="{{ URL('images/nula.png')}}" alt="accident car" id="car_img style="float: left; margin-right: 15px;"> @endif
+
+
     </div>
  <div id="tach">
  <input id="myValues" style="display:none" />
@@ -117,7 +122,7 @@
     var app_url = '{{ url('/') }}';
 
 
-    var center = SMap.Coords.fromWGS84({{$data['longitude']}} , {{$data['latitude']}});
+    var center = SMap.Coords.fromWGS84(17.0713 , 48.154);
         var m = new SMap(JAK.gel("m"), center, 11);
         m.addDefaultLayer(SMap.DEF_BASE).enable();
         m.addDefaultControls();
