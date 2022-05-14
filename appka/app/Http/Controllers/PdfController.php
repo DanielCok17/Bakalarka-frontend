@@ -109,6 +109,6 @@ class PdfController extends Controller
         }
         fclose($handle);
         $current_date = str_replace(' ', '_', date(now()));
-        return Response::download($filename, "dataset_nehod".$current_date.".csv", $headers);
+        return Response::download($filename, "vsetky_vehody".$current_date.".csv", $headers);
     }
 }

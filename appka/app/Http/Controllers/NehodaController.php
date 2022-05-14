@@ -367,7 +367,7 @@ class NehodaController extends Controller
             $policia++;
         }        
 
-        if($data['gforce'] >14 || $data['on_roof'] || $data['rotation_count'] >2 || $data['speed'] >110){
+        if($data['gforce'] >14 || $data['rotation_count'] >2 || $data['speed'] >110){
             $hasici++;
         }
         return ["hasici" => $hasici, "policia" => $policia, "zachranka" => $zachranka];

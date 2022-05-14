@@ -224,18 +224,15 @@
 
 <script>
   $(document).ready(function() {
-    //if({{$empty}} == false) {
         setTimeout(function() {
         $('#start').click();
     }, 1);
-    //}    
 });
 </script>
 
 
 <script>
    $(document).ready(function() {
-    //if({{$empty}} == false){
       setTimeout(function() {
         $('#start').click();
         myFunction();
@@ -247,13 +244,11 @@
 
 <script>
    $(document).ready(function() {
-    //if({{$empty}} == false){
       setTimeout(function() {
         $('#start').click();
         alert("Vráť spať zachranne zložky!"); 
        
     }, 20000);
-    //}
 });
 </script>
 

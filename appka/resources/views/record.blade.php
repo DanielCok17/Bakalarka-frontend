@@ -72,7 +72,7 @@
 
 <a href="http://127.0.0.1:8000/downloadPDF/{{$data['_id']}}" class="btn btn-info" role="button" id="btn">Vygenerovať report PDF</a> 
 
-<a href="http://127.0.0.1:8000/email/{{$data['_id']}}" class="btn btn-secondary" role="button" id="btn">Pošli report na mail</a> 
+<a href="http://127.0.0.1:8000/email/{{$data['_id']}}" class="btn btn-secondary" role="button" id="btn">Poslať report na mail</a> 
 
 <a href="http://127.0.0.1:8000/nehody" class="btn btn-primary" role="button" target="_blank" id="btn">Všetky nehody</a> 
 
