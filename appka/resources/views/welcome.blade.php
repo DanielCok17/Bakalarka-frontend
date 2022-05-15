@@ -342,12 +342,18 @@
 
 <script>
   var empty = @json($empty2, JSON_HEX_APOS); 
-
+  var data = @json($data2, JSON_HEX_APOS); 
+  console.log(data)
   if(empty == false){
    $(document).ready(function() {
       setTimeout(function() {
         $('#start').click();
-        alert("Vráť spať zachranne zložky!"); 
+        alert("Vráť spať zachranne zložky!");
+        var data = @json($data2, JSON_HEX_APOS); 
+
+        if(Object.keys(data).length != 0){
+          window.open('http://127.0.0.1:8000/welcomeDelete/'+data[0]['_id']);
+        }      
         
     }, 20000);
 });
@@ -355,15 +361,19 @@
 </script>
 
 <script>
-  var empty = @json($empty, JSON_HEX_APOS);    
+  var empty = @json($empty, JSON_HEX_APOS);  
+  var data = @json($data3, JSON_HEX_APOS); 
+
   if(empty == false){
 function myFunction() {
   var txt;
   if (confirm("Prajete si vyriešiť autonehodu manuálne?!")) {
     txt = "Manuálne vyriešenie nehody!";
   } else {
-    txt = "Nehoda bude vyriešená automaticky!";  
-
+    txt = "Nehoda bude vyriešená automaticky!";
+    if(Object.keys(data).length != 0){
+      window.open('http://127.0.0.1:8000/editedWelcome/'+data[0]['_id'])
+    } 
   }
   document.getElementById("demo").innerHTML = txt;
 }

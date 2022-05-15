@@ -11,8 +11,6 @@ use Carbon\Carbon;
 
 class NehodaController extends Controller
 {
-    //protected  $api = 'https://bakalarka-app.herokuapp.com/api/bakalarka/nehoda';
-
     //Main function for fetching/posting data from API
     function main(){
         
