@@ -168,7 +168,16 @@
         m.addLayer(layer);
         layer.enable();
 
-        var markers = map_checkpoints;      
+        var markers = map_checkpoints; 
+        
+        var policia_dostupne = @json($policia_available, JSON_HEX_APOS);    
+        var policia_total = @json($policia_total, JSON_HEX_APOS); 
+        
+        var hasici_dostupne = @json($hasici_available, JSON_HEX_APOS);    
+        var hasici_total = @json($hasici_total, JSON_HEX_APOS);  
+
+        var zachranka_dostupne = @json($zachranka_available, JSON_HEX_APOS);    
+        var zachranka_total = @json($zachranka_total, JSON_HEX_APOS); 
 
         markers.forEach(function(marker)
         {
@@ -185,7 +194,7 @@
               img.setAttribute("data-toggle", "tooltip");
 
               var card = new SMap.Card();
-              card.getHeader().innerHTML = "<strong>VIN</strong>";
+              card.getHeader().innerHTML = "<strong>Nehoda vozidla s VIN číslom: </strong>";
               card.getBody().innerHTML = marker.vin;
 
               zn.appendChild(img);
@@ -196,6 +205,84 @@
               coords.push(c);
             }             
         });
+        
+        //zachranka      
+        if(zachranka_total -zachranka_dostupne > 0 ){
+              var zn = JAK.mel("div");
+              zn.classList.add("map_marker","clickable");
+              zn.setAttribute('data-ltd', 48.11);
+              zn.setAttribute('data-lng',17.1 );
+
+              var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
+              var img = JAK.mel("img", { src: images_path+"/police.png" });
+              //img.setAttribute("title", marker.title);
+              img.setAttribute("data-toggle", "tooltip");
+
+              var card = new SMap.Card();
+              card.getHeader().innerHTML = "<strong>Záchranné stredisko</strong>";
+              card.getBody().innerHTML = "Dostupnosť je "+ zachranka_dostupne +"/"+zachranka_total;
+              
+           
+              
+              zn.appendChild(img);              
+
+              var c = SMap.Coords.fromWGS84(17.1,48.11);
+              var mark = new SMap.Marker(c, "niečo", "marker.vin");
+              mark.decorate(SMap.Marker.Feature.Card, card);
+              layer.addMarker(mark);
+              coords.push(c);
+        }    
+
+        //polícia
+        if(policia_total - policia_dostupne >0){
+              var zn = JAK.mel("div");
+              zn.classList.add("map_marker","clickable");
+              zn.setAttribute('data-ltd', 48);
+              zn.setAttribute('data-lng',17 );
+
+              var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
+              var img = JAK.mel("img", { src: images_path+"/police.png" });
+              //img.setAttribute("title", marker.title);
+              img.setAttribute("data-toggle", "tooltip");
+
+              var card = new SMap.Card();
+              card.getHeader().innerHTML = "<strong>Stretidko polície</strong>";
+              card.getBody().innerHTML = "Dostupnosť je "+ policia_dostupne +"/"+policia_total;              
+             
+              zn.appendChild(img);              
+
+              var c = SMap.Coords.fromWGS84(17,48);
+              var mark = new SMap.Marker(c, "niečo", "marker.vin");
+              mark.decorate(SMap.Marker.Feature.Card, card);
+              layer.addMarker(mark);
+              coords.push(c);
+          }
+
+             //hasiči                
+        if(hasici_total - hasici_dostupne >0){
+              var zn = JAK.mel("div");
+              zn.classList.add("map_marker","clickable");
+              zn.setAttribute('data-ltd', 48.16);
+              zn.setAttribute('data-lng',17.1 );
+
+              var img = JAK.mel("img", {src:SMap.CONFIG.img+"/marker/drop-red.png"});
+              var img = JAK.mel("img", { src: images_path+"/police.png" });
+              //img.setAttribute("title", marker.title);
+              img.setAttribute("data-toggle", "tooltip");
+
+              var card = new SMap.Card();
+              card.getHeader().innerHTML = "<strong>Hasičské stredisko </strong>";
+              card.getBody().innerHTML = "Dostupnosť je "+ hasici_dostupne +"/"+hasici_total;             
+            
+              
+              zn.appendChild(img);              
+
+              var c = SMap.Coords.fromWGS84(17.1,48.16);
+              var mark = new SMap.Marker(c, "niečo", "marker.vin");
+              mark.decorate(SMap.Marker.Feature.Card, card);
+              layer.addMarker(mark);
+              coords.push(c);
+          }
 
         var cz = m.computeCenterZoom(coords);
         m.setCenterZoom(cz[0], cz[1]);
@@ -223,11 +310,16 @@
 </script>
 
 <script>
-  $(document).ready(function() {
+  var empty = @json($empty, JSON_HEX_APOS);    
+  if(empty == false){
+    //alert("picvina")
+    $(document).ready(function() {
         setTimeout(function() {
         $('#start').click();
+        //alert("zac")
     }, 1);
 });
+  }
 </script>
 
 
@@ -243,6 +335,8 @@
 </script>
 
 <script>
+  var empty = @json($empty2, JSON_HEX_APOS);    
+  if(empty == false){
    $(document).ready(function() {
       setTimeout(function() {
         $('#start').click();
@@ -250,9 +344,12 @@
        
     }, 20000);
 });
+  }
 </script>
 
 <script>
+  var empty = @json($empty, JSON_HEX_APOS);    
+  if(empty == false){
 function myFunction() {
   var txt;
   if (confirm("Prajete si vyriešiť autonehodu manuálne?!")) {
@@ -263,9 +360,9 @@ function myFunction() {
   }
   document.getElementById("demo").innerHTML = txt;
 }
+  }
 </script>
 
-<!-- Vyriešené nehody TIMER     -->
 
 
 
