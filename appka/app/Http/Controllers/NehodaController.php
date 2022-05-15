@@ -134,7 +134,7 @@ class NehodaController extends Controller
         'zachranka_total' => $zachrari_total_count,
         'zachranka_available' => $zachrari_available_count,
         'empty' => empty($data3),
-        'empty2' => empty($data2)
+        'empty2' => empty($data2),
         ]);
 
     }
@@ -219,7 +219,9 @@ class NehodaController extends Controller
         'policia_total' => $policia_total_count,
         'policia_available' => $policia_available_count,
         'zachranka_total' => $zachrari_total_count,
-        'zachranka_available' => $zachrari_available_count
+        'zachranka_available' => $zachrari_available_count,
+        'empty' => empty($data3),
+        'empty2' => empty($data2),
         ]);
     }
 
@@ -301,6 +303,7 @@ class NehodaController extends Controller
                 array_push($data3,$data[$i]);
             }
         }
+
         
         return view('welcome',
         ['data'=> $data,
@@ -314,7 +317,9 @@ class NehodaController extends Controller
         'policia_total' => $policia_total_count,
         'policia_available' => $policia_available_count,
         'zachranka_total' => $zachrari_total_count,
-        'zachranka_available' => $zachrari_available_count
+        'zachranka_available' => $zachrari_available_count,
+        'empty' => empty($data3),
+        'empty2' => empty($data2),
         ]);
     }
     

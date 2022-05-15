@@ -179,6 +179,10 @@
         var zachranka_dostupne = @json($zachranka_available, JSON_HEX_APOS);    
         var zachranka_total = @json($zachranka_total, JSON_HEX_APOS); 
 
+        var empty = @json($empty, JSON_HEX_APOS);    
+        var empty2 = @json($empty2, JSON_HEX_APOS); 
+
+
         markers.forEach(function(marker)
         {
           
@@ -284,11 +288,16 @@
               coords.push(c);
           }
 
+          
         var cz = m.computeCenterZoom(coords);
-        m.setCenterZoom(cz[0], cz[1]);
+        if(empty == true && empty2 == true){
+          m.setCenterZoom(17.0713, 48.154);
+        }
+        else{
+          m.setCenterZoom(cz[0], cz[1]);
+        }
 </script>
 
-<!-- Nevyriešené nehody TIMER     -->
 
 <script>
     function incTimer() {
@@ -312,11 +321,9 @@
 <script>
   var empty = @json($empty, JSON_HEX_APOS);    
   if(empty == false){
-    //alert("picvina")
     $(document).ready(function() {
         setTimeout(function() {
         $('#start').click();
-        //alert("zac")
     }, 1);
 });
   }
@@ -328,20 +335,20 @@
       setTimeout(function() {
         $('#start').click();
         myFunction();
-        //alert("Vráť spať zachranne zložky!");
     }, 10000);
         
 });
 </script>
 
 <script>
-  var empty = @json($empty2, JSON_HEX_APOS);    
+  var empty = @json($empty2, JSON_HEX_APOS); 
+
   if(empty == false){
    $(document).ready(function() {
       setTimeout(function() {
         $('#start').click();
         alert("Vráť spať zachranne zložky!"); 
-       
+        
     }, 20000);
 });
   }
